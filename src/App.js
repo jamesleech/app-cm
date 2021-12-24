@@ -1,12 +1,11 @@
 import React, { useState } from "react";
+import 'mapbox-gl/dist/mapbox-gl.css'; // eslint-disable-line import/no-webpack-loader-syntax
 import DeckGL from "@deck.gl/react";
 import { MapView } from "@deck.gl/core";
 import { ScatterplotLayer } from "@deck.gl/layers";
-import { StaticMap } from "react-map-gl";
+import { StaticMap } from "!react-map-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 import { useSites } from "./useSites";
 import { SuburbInfo } from "./SuburbInfo";
-
-const MAPBOX_ACCESS_TOKEN = process.env.MAPBOX_ACCESS_TOKEN;
 
 // Viewport settings
 const INITIAL_VIEW_STATE = {
@@ -49,7 +48,7 @@ function App() {
           <StaticMap
             // mapStyle="mapbox://styles/mapbox/dark-v9"
             mapStyle="mapbox://styles/mapbox/streets-v9"
-            mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
+            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
           />
         </MapView>
       </DeckGL>

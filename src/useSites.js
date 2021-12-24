@@ -41,7 +41,7 @@ const adviceColours = {
 };
 
 const getPosition = data => data.coordinates;
-const getRadius = data => 5 * data.sites.length;
+const getRadius = data => 200 + (20 * data.sites.length);
 const getFillColor = data => lessThanADayAgo(data.date) ? [0,255,255]: adviceColours[data.highestAdvise]; // [255, 0, 0];
 const getLineColor = data => adviceColours[data.highestAdvise]; // [255, 0, 0];
 const getLineWidth = data => 1;
@@ -55,7 +55,7 @@ const mapPostCodeToPoint = (pc) => ({
     },
   ],
   pickable: false,
-  opacity: 0.6 - (pc.sites.length * 0.01),
+  opacity: 0.3 - (pc.sites.length * 0.01),
   stroked: true,
   filled: true,
   radiusScale: 50,

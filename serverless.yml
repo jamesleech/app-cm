@@ -1,0 +1,47 @@
+service: app-cm
+variablesResolutionMode: 20210326
+
+plugins:
+  - serverless-s3-deploy
+
+provider:
+  name: aws
+  region: ap-southeast-2
+  stage: ${opt:stage}
+
+custom:
+  prefix: '${self:provider.stage}-${self:service}'
+  assets:
+    auto: true
+    targets:
+      - bucket:
+          Ref: SiteBucket
+        files:
+          - source: build/
+            globs: '**/*'
+
+resources:
+  Resources:
+    SiteBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: '${self:custom.prefix}-bucket-prod'
+        AccessControl: PublicRead
+
+    SiteBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: SiteBucket
+        PolicyDocument:
+          Statement:
+            - Action:
+                - 's3:GetObject'
+              Effect: 'Allow'
+              Resource:
+                Fn::Join:
+                  - ''
+                  - - 'arn:aws:s3:::'
+                    - Ref: SiteBucket
+                    - '/*'
+              Principal: '*'
